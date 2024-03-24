@@ -2,14 +2,16 @@ import csv
 import os
 from docx import Document
 from docx.shared import Inches, Pt
+from config_class import Config
 
 
 class DocxGenerator:
-    def __init__(self, file_path):
+    def __init__(self):
         self.__document: Document = None
         self.__style = None
         self.__font = None
-        self.__file_path = os.path.join(file_path)
+        self.config = Config("config.ini")
+        self.__file_path = self.config.output_docx_path
         self.__figure_number = 0
         self.__create_file()
         self.function_map = {}
@@ -20,9 +22,10 @@ class DocxGenerator:
             self.__document = Document()
         else:
             self.__document = Document(self.__file_path)
-        self.save_document()
-        self.__style = self.__document.styles['Normal']
+
+        self.__style = self.__document.styles[self.config.document_style]
         self.__font = self.__style.font
+        self.save_document()
 
     def __create_function_map(self):
         self.function_map = {
@@ -35,7 +38,7 @@ class DocxGenerator:
         self.__style = self.__document.styles[style]
         self.save_document()
 
-    def set_document_font(self, font='Calibri', size=12):
+    def set_document_font(self, font, size):
         self.__font.name = font
         self.__font.size = Pt(size)
         self.save_document()
@@ -146,15 +149,14 @@ class DocxGenerator:
 
 def main():
     # Create a WordDocument instance
-    word_doc = DocxGenerator('example.docx')
-
-    # Set document style and font
-    word_doc.set_document_style('Normal')
-    word_doc.set_document_font('Times New Roman', size=12)
+    word_doc = DocxGenerator()
 
     # Add a heading
     word_doc.function_map["add_heading"]('Heading level 0', level=0)
     word_doc.function_map["add_heading"]('Heading level 1', level=1)
+    word_doc.add_text('This is another paragraph.')
+    word_doc.function_map["add_heading"]('Heading level 1', level=1)
+    word_doc.add_text('This is another paragraph.')
     word_doc.function_map["add_heading"]('Heading level 2', level=2)
     # Add table
     word_doc.add_table("figure.csv")

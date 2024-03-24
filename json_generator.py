@@ -1,11 +1,15 @@
 import os
 import json
+from config_class import Config
 from definitions import *
-
+# TODO change name to recipe generator
+# TODO change type from function name to key for instance add_heading -> heading
+# TODO export extra functionality to different functions heading0(text) instead of heading("text",0)
 
 class JsonGenerator:
-    def __init__(self, json_file_path="commands.json"):
-        self.json_file_path = os.path.join(json_file_path)
+    def __init__(self):
+        self.config = Config("config.ini")
+        self.json_file_path = self.config.output_json_path
         self.commands = []
 
     def add_heading(self, text, level):
@@ -28,6 +32,10 @@ class JsonGenerator:
         })
 
     def add_bullet_point(self, text):
+        """
+        :param text:
+        :return:
+        """
         self.commands.append({
             'type': 'add_bullet_point',
             'data': {
@@ -71,11 +79,22 @@ class JsonGenerator:
 
 if __name__ == '__main__':
     # Create a JsonGenerator instance
-    json_generator = JsonGenerator('commands.json')
+    json_generator = JsonGenerator()
 
     # Add commands
-    json_generator.add_heading('Heading 0', 0)
+    json_generator.add_heading('fghjfhk', 0)
     json_generator.add_heading('Heading 1', 1)
+    json_generator.add_text(
+        'We can include various components such as headings,'
+        ' text, bullet points, figures, and tables.\n'
+        'also this section will store whitespaces new line and more\n'
+        'bye')
+    json_generator.add_heading('Heading 1', 1)
+    json_generator.add_text(
+        'We can include various components such as headings,'
+        ' text, bullet points, figures, and tables.\n'
+        'also this section will store whitespaces new line and more\n'
+        'bye')
     json_generator.add_heading('Heading 2', 2)
     json_generator.add_heading('Heading 3', 3)
     json_generator.add_text(

@@ -16,9 +16,9 @@ class JsonGenerator:
             }
         })
 
-    def add_paragraph(self, text):
+    def add_text(self, text):
         self.commands.append({
-            'type': 'add_paragraph',
+            'type': 'add_text',
             'data': {
                 'text': text
             }
@@ -34,29 +34,30 @@ class JsonGenerator:
 
     def add_number_point(self, text):
         self.commands.append({
-            'type': 'add_number_point',
+            'type': 'add_bullet_point',
             'data': {
-                'text': text
+                'text': text,
+                'numbers': True
             }
         })
 
-    def add_table(self, file, heading):
+    def add_table(self, csv_path, heading):
         self.commands.append({
             'type': 'add_table',
             'data': {
-                'file': file,
+                'csv_path': csv_path,
                 'heading': heading
             }
         })
 
-    def add_figure(self, file, heading, width=None, length=None):
+    def add_figure(self, image_path, title, width=None, height=None):
         self.commands.append({
             'type': 'add_figure',
             'data': {
-                'file': file,
-                'heading': heading,
+                'image_path': image_path,
+                'title': title,
                 'width': width,
-                'length': length
+                'height': height
             }
         })
 
@@ -74,12 +75,12 @@ if __name__ == '__main__':
     json_generator.add_heading('Heading 1', 1)
     json_generator.add_heading('Heading 2', 2)
     json_generator.add_heading('Heading 3', 3)
-    json_generator.add_paragraph(
+    json_generator.add_text(
         'We can include various components such as headings,'
         ' text, bullet points, figures, and tables.\n'
         'also this section will store whitespaces new line and more\n'
         'bye')
-    json_generator.add_paragraph(
+    json_generator.add_text(
         'We can include various components such as headings,'
         ' text, bullet points, figures, and tables.\n'
         'also this section will store whitespaces new line and more\n'
@@ -91,7 +92,7 @@ if __name__ == '__main__':
     json_generator.add_number_point('Numbered point 2')
     json_generator.add_heading('Heading 2', 2)
     json_generator.add_table(r'C:\Users\talgab\PycharmProjects\report_generator\figure.csv', 'table heading')
-    json_generator.add_figure(r'C:\Users\talgab\PycharmProjects\report_generator\figure.csv', 'table heading')
+    json_generator.add_figure(r'C:\Users\talgab\OneDrive - Mobileye\Pictures\Picture1.jpg', 'table heading')
 
     # Save the JSON file
     json_generator.save()

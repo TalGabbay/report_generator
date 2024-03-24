@@ -57,7 +57,7 @@ class DocxGenerator:
             self.__document.add_paragraph(text)
         self.save_document()
 
-    def add_bullet_points(self, text, numbers=False):
+    def add_bullet_point(self, text, numbers=False):
         if numbers:
             self.__document.add_paragraph(text, style='List Number')
         else:
@@ -94,7 +94,7 @@ class DocxGenerator:
         self.save_document()
         self.__figure_number += 1
 
-    def add_table(self, csv_path):
+    def add_table(self, csv_path, heading=None):
         """
         Add a table to the document.
 
@@ -104,8 +104,11 @@ class DocxGenerator:
 
         Returns:
             Table: The added table object.
+            :param heading:
             :param csv_path:
         """
+        if heading:
+            self.add_heading(heading)
         csv_table = self.__load_table_from_csv(csv_path)
         rows = len(csv_table)
         cols = len(csv_table[0])
@@ -159,9 +162,9 @@ def main():
     word_doc.add_text('This is another paragraph.')
 
     # Add bullet points with numbers
-    word_doc.add_bullet_points('Numbered bullet point 1', numbers=True)
-    word_doc.add_bullet_points('Numbered bullet point 2', numbers=True)
-    word_doc.add_bullet_points('Numbered bullet point 3', numbers=True)
+    word_doc.add_bullet_point('Numbered bullet point 1', numbers=True)
+    word_doc.add_bullet_point('Numbered bullet point 2', numbers=True)
+    word_doc.add_bullet_point('Numbered bullet point 3', numbers=True)
 
     # Add a figure without a title
     word_doc.add_figure(r'C:\Users\talgab\OneDrive - Mobileye\Pictures\Picture1.jpg', width=5, height=4)

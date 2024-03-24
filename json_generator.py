@@ -1,9 +1,10 @@
 import os
 import json
+from definitions import *
 
 
 class JsonGenerator:
-    def __init__(self, json_file_path):
+    def __init__(self, json_file_path="commands.json"):
         self.json_file_path = os.path.join(json_file_path)
         self.commands = []
 
@@ -11,16 +12,18 @@ class JsonGenerator:
         self.commands.append({
             'type': 'add_heading',
             'data': {
-                'text': text,
-                'level': level
+                AddHeading.text.value: text,
+                AddHeading.level.value: level
             }
         })
 
-    def add_text(self, text):
+    def add_text(self, text, bold=False, italic=False):
         self.commands.append({
             'type': 'add_text',
             'data': {
-                'text': text
+                AddText.text.value: text,
+                AddText.bold.value: bold,
+                AddText.italic.value: italic
             }
         })
 
@@ -28,7 +31,7 @@ class JsonGenerator:
         self.commands.append({
             'type': 'add_bullet_point',
             'data': {
-                'text': text
+                AddBulletPoint.text.value: text
             }
         })
 
@@ -36,8 +39,8 @@ class JsonGenerator:
         self.commands.append({
             'type': 'add_bullet_point',
             'data': {
-                'text': text,
-                'numbers': True
+                AddBulletPoint.text.value: text,
+                AddBulletPoint.numbers.value: True
             }
         })
 
@@ -45,8 +48,8 @@ class JsonGenerator:
         self.commands.append({
             'type': 'add_table',
             'data': {
-                'csv_path': csv_path,
-                'heading': heading
+                AddTable.csv_path.value: csv_path,
+                AddTable.heading.value: heading
             }
         })
 
@@ -54,10 +57,10 @@ class JsonGenerator:
         self.commands.append({
             'type': 'add_figure',
             'data': {
-                'image_path': image_path,
-                'title': title,
-                'width': width,
-                'height': height
+                AddFigure.image_path.value: image_path,
+                AddFigure.title.value: title,
+                AddFigure.width.value: width,
+                AddFigure.height.value: height
             }
         })
 

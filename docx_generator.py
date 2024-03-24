@@ -31,9 +31,6 @@ class DocxGenerator:
             if callable(getattr(self, name)) and not name.startswith('__')
         }
 
-    def set_function_map(self):
-        self.__dict__
-
     def set_document_style(self, style):
         self.__style = self.__document.styles[style]
         self.save_document()

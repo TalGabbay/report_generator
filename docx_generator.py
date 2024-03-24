@@ -10,8 +10,10 @@ class DocxGenerator:
         self.__style = None
         self.__font = None
         self.__file_path = os.path.join(file_path)
-        self.__create_file()
         self.__figure_number = 0
+        self.__create_file()
+        self.function_map = {}
+        self.__create_function_map()
 
     def __create_file(self):
         if not os.path.exists(self.__file_path):
@@ -21,6 +23,16 @@ class DocxGenerator:
         self.save_document()
         self.__style = self.__document.styles['Normal']
         self.__font = self.__style.font
+
+    def __create_function_map(self):
+        self.function_map = {
+            name: getattr(self, name)
+            for name in dir(self)
+            if callable(getattr(self, name)) and not name.startswith('__')
+        }
+
+    def set_function_map(self):
+        self.__dict__
 
     def set_document_style(self, style):
         self.__style = self.__document.styles[style]
@@ -141,9 +153,9 @@ def main():
     word_doc.set_document_font('Times New Roman', size=12)
 
     # Add a heading
-    word_doc.add_heading('Heading level 0', level=0)
-    word_doc.add_heading('Heading level 1', level=1)
-    word_doc.add_heading('Heading level 2', level=2)
+    word_doc.function_map["add_heading"]('Heading level 0', level=0)
+    word_doc.function_map["add_heading"]('Heading level 1', level=1)
+    word_doc.function_map["add_heading"]('Heading level 2', level=2)
     # Add table
     word_doc.add_table("figure.csv")
     # Add more general paragraph text

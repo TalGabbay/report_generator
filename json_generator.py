@@ -24,14 +24,6 @@ class JsonGenerator:
             }
         })
 
-    def set_text(self, text):
-        self.commands.append({
-            'type': 'set_text',
-            'data': {
-                'text': text
-            }
-        })
-
     def add_bullet_point(self, text):
         self.commands.append({
             'type': 'add_bullet_point',
@@ -57,6 +49,17 @@ class JsonGenerator:
             }
         })
 
+    def add_figure(self, file, heading, width=None, length=None):
+        self.commands.append({
+            'type': 'add_figure',
+            'data': {
+                'file': file,
+                'heading': heading,
+                'width': width,
+                'length': length
+            }
+        })
+
     def save(self):
         with open(self.json_file_path, 'w') as file:
             json.dump(self.commands, file, indent=4)
@@ -67,15 +70,28 @@ if __name__ == '__main__':
     json_generator = JsonGenerator('commands.json')
 
     # Add commands
-    json_generator.add_heading('Main Heading', 1)
-    json_generator.add_paragraph('This is an example of using JsonGenerator to create a JSON document.')
-    json_generator.set_text(
-        'We can include various components such as headings, text, bullet points, figures, and tables.')
+    json_generator.add_heading('Heading 0', 0)
+    json_generator.add_heading('Heading 1', 1)
+    json_generator.add_heading('Heading 2', 2)
+    json_generator.add_heading('Heading 3', 3)
+    json_generator.add_paragraph(
+        'We can include various components such as headings,'
+        ' text, bullet points, figures, and tables.\n'
+        'also this section will store whitespaces new line and more\n'
+        'bye')
+    json_generator.add_paragraph(
+        'We can include various components such as headings,'
+        ' text, bullet points, figures, and tables.\n'
+        'also this section will store whitespaces new line and more\n'
+        'bye')
+    json_generator.add_heading('Heading 1', 1)
     json_generator.add_bullet_point('Bullet point 1')
     json_generator.add_bullet_point('Bullet point 2')
     json_generator.add_number_point('Numbered point 1')
     json_generator.add_number_point('Numbered point 2')
-    json_generator.add_table('blabla.csv', 'table heading')
+    json_generator.add_heading('Heading 2', 2)
+    json_generator.add_table(r'C:\Users\talgab\PycharmProjects\report_generator\figure.csv', 'table heading')
+    json_generator.add_figure(r'C:\Users\talgab\PycharmProjects\report_generator\figure.csv', 'table heading')
 
     # Save the JSON file
     json_generator.save()

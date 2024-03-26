@@ -37,5 +37,6 @@ class DocxFunctionKey(Enum):
     bullet_point = "add_bullet_point"
     numbered_bullet_point = "add_bullet_point"
     page_break = "add_page_break"
+    figure_list = "add_list_of_figures"
 
 

@@ -1,6 +1,7 @@
 import csv
 import os
 from docx import Document
+from docx.enum.text import WD_BREAK
 from docx.shared import Inches, Pt
 from config_class import Config
 from header_numerizer import HeaderNumerizer
@@ -13,12 +14,10 @@ class DocxGenerator:
         self.__font = None
         self.config = Config("config.ini")
         self.__file_path = self.config.output_docx_path
-        self.__figure_number = 0
         self.__create_file()
         self.function_map = {}
         self.__create_function_map()
         self.__header_numerizer = HeaderNumerizer()
-        self.__list_of_figures = []
 
     def __create_file(self):
         if not os.path.exists(self.__file_path):
@@ -57,7 +56,7 @@ class DocxGenerator:
         p = self.__document.add_paragraph("")
         if bold:
             p.add_run(text).bold = True
-        if italic:
+        elif italic:
             p.add_run(text).italic = True
         else:
             self.__document.add_paragraph(text)
@@ -85,7 +84,6 @@ class DocxGenerator:
             width (float): The width of the image in inches. Default is None.
             height (float): The height of the image in inches. Default is None.
         """
-        title = f"figure - {self.__figure_number} - " + title
         self.__document.add_paragraph(title, style='Caption')
         if width is None and height is None:
             self.__document.add_picture(image_path)
@@ -96,8 +94,6 @@ class DocxGenerator:
         elif height is not None:
             self.__document.add_picture(image_path, height=Inches(height))
         self.save_document()
-        self.__list_of_figures.append(title)
-        self.__figure_number += 1
 
     def add_table(self, csv_path, heading=None):
         """
@@ -123,6 +119,13 @@ class DocxGenerator:
             for j, cell in enumerate(row.cells):
                 cell.text = csv_table[i][j]
         self.save_document()
+
+    def add_list_of_figures(self, list_of_figures):
+        self.add_page_break()
+        self.add_heading("list of figures:", 0)
+        for figure_title in list_of_figures:
+            self.add_text(figure_title, bold=True)
+        self.add_page_break()
 
     def save_document(self):
         self.__document.save(self.__file_path)
@@ -203,7 +206,7 @@ def main():
     word_doc.add_figure(r'C:\Users\talgab\OneDrive - Mobileye\Pictures\Picture1.jpg',"Picture1.jpg", width=5, height=4)
 
     # Add more general paragraph text
-    word_doc.add_text('This is a final paragraph.')
+    word_doc.add_text('This is the final paragraph.')
 
 
 if __name__ == "__main__":

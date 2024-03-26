@@ -8,6 +8,8 @@ class JsonGenerator:
         self.config = Config("config.ini")
         self.json_file_path = self.config.output_json_path
         self.commands = []
+        self.__figure_number = 0
+        self.__list_of_figures = []
 
     def add_title(self, text):
         self.__add_header(text, 0)
@@ -64,6 +66,9 @@ class JsonGenerator:
         })
 
     def add_figure(self, image_path, title, width=None, height=None):
+        title = f"figure - {self.__figure_number} - " + title
+        self.__list_of_figures.append(title)
+        self.__figure_number += 1
         self.commands.append({
             'type': DocxFunctionKey.figure.name,
             'data': {
@@ -74,6 +79,13 @@ class JsonGenerator:
             }
         })
 
+    def add_list_of_figures(self):
+        self.commands.append({
+            'type': DocxFunctionKey.figure_list.name,
+            'data': {
+                "list_of_figures": self.__list_of_figures
+            }
+        })
     def add_page_break(self):
         self.commands.append({
             'type': DocxFunctionKey.page_break.name,
@@ -108,6 +120,7 @@ if __name__ == '__main__':
     # Create a JsonGenerator instance
     json_generator = JsonGenerator()
     json_generator.add_title("Docx Generator Example")
+    json_generator.add_list_of_figures()
     json_generator.add_heading_1("Introduction")
     json_generator.add_plain_text("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
     json_generator.add_heading_2("Section 1: Overview")

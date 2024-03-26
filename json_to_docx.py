@@ -12,6 +12,7 @@ class JsonToDocx:
         self.json_file_path = os.path.join(self.config.output_json_path)
         self.command_dict = None
         self.funct_map = docx_generator_obj.function_map
+        self.docx_generator = docx_generator_obj
         self.__load_json()
 
     def __load_json(self):
@@ -26,6 +27,7 @@ class JsonToDocx:
             cmd = DocxFunctionKey[type].value
             cmd_args = command['data']
             self.funct_map[cmd](**cmd_args)
+
 
 if __name__ == '__main__':
     JsonToDocx(DocxGenerator()).execute_commands()

@@ -1,12 +1,8 @@
 import os.path
-
 from config_class import Config
 from docx_generator import DocxGenerator
 from definitions import DocxFunctionKey
 import json
-
-# TODO Numerize headings following convention.
-# TODO Add functionality to build list of all figures.
 
 
 class JsonToDocx:
@@ -30,7 +26,6 @@ class JsonToDocx:
             cmd = DocxFunctionKey[type].value
             cmd_args = command['data']
             self.funct_map[cmd](**cmd_args)
-
 
 if __name__ == '__main__':
     JsonToDocx(DocxGenerator()).execute_commands()

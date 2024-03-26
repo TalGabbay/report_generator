@@ -1,8 +1,6 @@
-import os
 import json
 from config_class import Config
 from definitions import *
-# TODO change name to recipe generator
 
 
 class JsonGenerator:
@@ -81,6 +79,7 @@ class JsonGenerator:
             'type': DocxFunctionKey.page_break.name,
             'data': {}
         })
+
     def __add_header(self, text, level):
         self.commands.append({
             'type': DocxFunctionKey.heading.name,

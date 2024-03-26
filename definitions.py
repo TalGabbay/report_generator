@@ -27,3 +27,15 @@ class AddFigure(Enum):
 class AddTable(Enum):
     csv_path = 'csv_path'
     heading = 'heading'
+
+
+class DocxFunctionKey(Enum):
+    heading = "add_heading"
+    text = "add_text"
+    figure = "add_figure"
+    table = "add_table"
+    bullet_point = "add_bullet_point"
+    numbered_bullet_point = "add_bullet_point"
+    page_break = "add_page_break"
+
+

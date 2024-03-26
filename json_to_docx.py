@@ -1,5 +1,8 @@
 import os.path
+
+from config_class import Config
 from docx_generator import DocxGenerator
+from definitions import DocxFunctionKey
 import json
 
 # TODO Numerize headings following convention.
@@ -8,8 +11,9 @@ import json
 
 class JsonToDocx:
 
-    def __init__(self, json_file_path, docx_generator_obj: DocxGenerator):
-        self.json_file_path = os.path.join(json_file_path)
+    def __init__(self, docx_generator_obj: DocxGenerator):
+        self.config = Config("config.ini")
+        self.json_file_path = os.path.join(self.config.output_json_path)
         self.command_dict = None
         self.funct_map = docx_generator_obj.function_map
         self.__load_json()
@@ -21,11 +25,13 @@ class JsonToDocx:
 
     def execute_commands(self):
         for command in self.command_dict:
-            cmd = command['type']
+            type = command['type']
+            # TODO Add type validation
+            cmd = DocxFunctionKey[type].value
             cmd_args = command['data']
             self.funct_map[cmd](**cmd_args)
 
 
 if __name__ == '__main__':
-    JsonToDocx("commands.json", DocxGenerator()).execute_commands()
+    JsonToDocx(DocxGenerator()).execute_commands()
 

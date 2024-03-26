@@ -3,6 +3,7 @@ import os
 from docx import Document
 from docx.shared import Inches, Pt
 from config_class import Config
+from header_numerizer import HeaderNumerizer
 
 
 class DocxGenerator:
@@ -16,6 +17,8 @@ class DocxGenerator:
         self.__create_file()
         self.function_map = {}
         self.__create_function_map()
+        self.__header_numerizer = HeaderNumerizer()
+        self.__list_of_figures = []
 
     def __create_file(self):
         if not os.path.exists(self.__file_path):
@@ -68,10 +71,11 @@ class DocxGenerator:
         self.save_document()
 
     def add_heading(self, text, level=1):
+        text = self.__header_numerizer.add_heading(text, level)
         self.__document.add_heading(text, level=level)
         self.save_document()
 
-    def add_figure(self, image_path, title=None, width=None, height=None):
+    def add_figure(self, image_path, title, width=None, height=None):
         """
         Add a figure (image) to the document.
 
@@ -81,9 +85,8 @@ class DocxGenerator:
             width (float): The width of the image in inches. Default is None.
             height (float): The height of the image in inches. Default is None.
         """
-        if title:
-            title = f"figure - {self.__figure_number} - " + title
-            self.__document.add_paragraph(title, style='Caption')
+        title = f"figure - {self.__figure_number} - " + title
+        self.__document.add_paragraph(title, style='Caption')
         if width is None and height is None:
             self.__document.add_picture(image_path)
         elif width is not None and height is not None:
@@ -92,9 +95,8 @@ class DocxGenerator:
             self.__document.add_picture(image_path, width=Inches(width))
         elif height is not None:
             self.__document.add_picture(image_path, height=Inches(height))
-        if title:
-            self.__document.add_paragraph()
         self.save_document()
+        self.__list_of_figures.append(title)
         self.__figure_number += 1
 
     def add_table(self, csv_path, heading=None):
@@ -158,8 +160,37 @@ def main():
     word_doc.function_map["add_heading"]('Heading level 1', level=1)
     word_doc.add_text('This is another paragraph.')
     word_doc.function_map["add_heading"]('Heading level 2', level=2)
+    word_doc.function_map["add_heading"]('Heading level 3', level=3)
+    word_doc.function_map["add_heading"]('Heading level 3', level=3)
+    word_doc.function_map["add_heading"]('Heading level 2', level=2)
+    word_doc.function_map["add_heading"]('Heading level 2', level=2)
+    word_doc.function_map["add_heading"]('Heading level 3', level=3)
+    word_doc.function_map["add_heading"]('Heading level 3', level=3)
+    word_doc.function_map["add_heading"]('Heading level 2', level=2)
+    word_doc.function_map["add_heading"]('Heading level 0', level=0)
+    word_doc.function_map["add_heading"]('Heading level 1', level=1)
+    word_doc.add_text('This is another paragraph.')
+    word_doc.function_map["add_heading"]('Heading level 1', level=1)
+    word_doc.add_text('This is another paragraph.')
+    word_doc.function_map["add_heading"]('Heading level 2', level=2)
+    word_doc.function_map["add_heading"]('Heading level 3', level=3)
+    word_doc.function_map["add_heading"]('Heading level 3', level=3)
+    word_doc.function_map["add_heading"]('Heading level 3', level=3)
+    word_doc.function_map["add_heading"]('Heading level 3', level=3)
+    word_doc.function_map["add_heading"]('Heading level 2', level=2)
+    word_doc.function_map["add_heading"]('Heading level 2', level=2)
+    word_doc.function_map["add_heading"]('Heading level 3', level=3)
+    word_doc.add_figure(r'C:\Users\talgab\OneDrive - Mobileye\Pictures\Picture1.jpg', "Picture1.jpg", width=5, height=4)
+    word_doc.function_map["add_heading"]('Heading level 3', level=3)
+    word_doc.function_map["add_heading"]('Heading level 2', level=2)
+    word_doc.function_map["add_heading"]('Heading level 3', level=3)
+    word_doc.add_figure(r'C:\Users\talgab\OneDrive - Mobileye\Pictures\Picture1.jpg', "Picture1.jpg", width=5, height=4)
+    word_doc.function_map["add_heading"]('Heading level 3', level=3)
+    word_doc.add_figure(r'C:\Users\talgab\OneDrive - Mobileye\Pictures\Picture1.jpg', "Picture1.jpg", width=5, height=4)
+    word_doc.function_map["add_heading"]('Heading level 3', level=4)
+    word_doc.function_map["add_heading"]('Heading level 3', level=4)
     # Add table
-    word_doc.add_table("figure.csv")
+    word_doc.add_table("datadata.csv")
     # Add more general paragraph text
     word_doc.add_text('This is another paragraph.')
 
@@ -169,7 +200,7 @@ def main():
     word_doc.add_bullet_point('Numbered bullet point 3', numbers=True)
 
     # Add a figure without a title
-    word_doc.add_figure(r'C:\Users\talgab\OneDrive - Mobileye\Pictures\Picture1.jpg', width=5, height=4)
+    word_doc.add_figure(r'C:\Users\talgab\OneDrive - Mobileye\Pictures\Picture1.jpg',"Picture1.jpg", width=5, height=4)
 
     # Add more general paragraph text
     word_doc.add_text('This is a final paragraph.')

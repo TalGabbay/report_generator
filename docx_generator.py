@@ -2,7 +2,7 @@ import csv
 import os
 from docx import Document
 from docx.enum.text import WD_BREAK
-from docx.shared import Inches, Pt
+from docx.shared import Pt, Cm
 from config_class import Config
 from header_numerizer import HeaderNumerizer
 
@@ -74,6 +74,11 @@ class DocxGenerator:
         self.__document.add_heading(text, level=level)
         self.save_document()
 
+    def add_title(self, text):
+        text = self.__header_numerizer.add_heading(text, 0)
+        self.__document.add_heading(text, level=0)
+        self.save_document()
+
     def add_figure(self, image_path, title, width=None, height=None):
         """
         Add a figure (image) to the document.
@@ -88,11 +93,11 @@ class DocxGenerator:
         if width is None and height is None:
             self.__document.add_picture(image_path)
         elif width is not None and height is not None:
-            self.__document.add_picture(image_path, width=Inches(width), height=Inches(height))
+            self.__document.add_picture(image_path, width=Cm(width), height=Cm(height))
         elif width is not None:
-            self.__document.add_picture(image_path, width=Inches(width))
+            self.__document.add_picture(image_path, width=Cm(width))
         elif height is not None:
-            self.__document.add_picture(image_path, height=Inches(height))
+            self.__document.add_picture(image_path, height=Cm(height))
         self.save_document()
 
     def add_table(self, csv_path, heading=None):

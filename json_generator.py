@@ -12,7 +12,14 @@ class JsonGenerator:
         self.__list_of_figures = []
 
     def add_title(self, text):
-        self.__add_header(text, 0)
+        self.commands.append(
+            {
+                'type': DocxFunctionKey.title.name,
+                'data': {
+                        AddTitle.text.value: text,
+                }
+            }
+        )
 
     def add_heading_1(self, text):
         self.__add_header(text, 1)
@@ -86,6 +93,7 @@ class JsonGenerator:
                 "list_of_figures": self.__list_of_figures
             }
         })
+
     def add_page_break(self):
         self.commands.append({
             'type': DocxFunctionKey.page_break.name,
@@ -117,65 +125,11 @@ class JsonGenerator:
 
 
 if __name__ == '__main__':
-    # Create a JsonGenerator instance
+    # Generator instance
     json_generator = JsonGenerator()
-    json_generator.add_title("Docx Generator Example")
-    json_generator.add_list_of_figures()
-    json_generator.add_heading_1("Introduction")
-    json_generator.add_plain_text("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
-    json_generator.add_heading_2("Section 1: Overview")
-    json_generator.add_plain_text(
-        "Nulla facilisi. Sed nec nisi id arcu luctus eleifend. Vivamus convallis velit ac eros blandit, "
-        "ut interdum lorem dignissim.")
-    json_generator.add_figure("resources/data.jpg", "data figure title")
-    json_generator.add_figure("resources/data.jpg", "data figure title")
-    json_generator.add_figure("resources/data.jpg", "data figure title")
-    json_generator.add_figure("resources/data.jpg", "data figure title")
-    json_generator.add_heading_3("Subsection 1.1: Background")
-    json_generator.add_plain_text(
-        "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.")
-    json_generator.add_heading_3("Subsection 1.2: Objectives")
-    json_generator.add_plain_text("Duis ac efficitur est. Nam ullamcorper magna quis ante auctor fringilla.")
-    json_generator.add_heading_2("Section 2: Methodology")
-    json_generator.add_plain_text("Suspendisse nec condimentum libero. Donec et diam nec urna gravida tempus.")
 
-    # Adding formatted text
-    json_generator.add_bold_text("This is important information.")
-    json_generator.add_italic_text("Note: Please pay attention to the following details.")
+    # Run some basic commands
+    json_generator.add_title("System integration blabla")
 
-    # Adding bullet points
-    json_generator.add_bullet_point("Point 1: Lorem ipsum dolor sit amet.")
-    json_generator.add_bullet_point("Point 2: Consectetur adipiscing elit.")
-    json_generator.add_bullet_point("Point 3: Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
-
-    # Adding numbered bullet points
-    json_generator.add_number_point("Step 1: Lorem ipsum dolor sit amet.")
-    json_generator.add_number_point("Step 2: Consectetur adipiscing elit.")
-    json_generator.add_number_point("Step 3: Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
-
-    # Adding a table
-    json_generator.add_table("resources/data.csv", "Data Summary")
-
-    # Add different level headings
-    json_generator.add_page_break()
-    json_generator.add_title("Header numeration check")
-    json_generator.add_heading_1("Introduction")
-    json_generator.add_heading_2("Background")
-    json_generator.add_heading_3("Historical Context")
-    json_generator.add_heading_2("Objectives")
-    json_generator.add_heading_1("Methodology")
-    json_generator.add_heading_2("Data Collection")
-    json_generator.add_heading_2("Data Analysis")
-    json_generator.add_heading_3("Quantitative Analysis")
-    json_generator.add_heading_3("Qualitative Analysis")
-    json_generator.add_heading_1("Results")
-    json_generator.add_heading_2("Statistical Findings")
-    json_generator.add_heading_3("Correlation Analysis")
-    json_generator.add_heading_3("Regression Analysis")
-    json_generator.add_heading_2("Qualitative Insights")
-    json_generator.add_heading_1("Conclusion")
-    json_generator.add_heading_2("Summary")
-    json_generator.add_heading_2("Recommendations")
-
-    # Save the JSON file
+    # save file
     json_generator.save()

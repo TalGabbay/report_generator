@@ -29,8 +29,13 @@ class AddTable(Enum):
     heading = 'heading'
 
 
+class AddTitle(Enum):
+    text = 'text'
+
+
 class DocxFunctionKey(Enum):
     heading = "add_heading"
+    title = "add_title"
     text = "add_text"
     figure = "add_figure"
     table = "add_table"

@@ -22,6 +22,7 @@ class AddFigure(Enum):
     title = 'title'
     width = 'width'
     height = 'height'
+    figure_number = 'figure_number'
 
 
 class AddTable(Enum):

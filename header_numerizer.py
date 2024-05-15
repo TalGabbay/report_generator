@@ -10,7 +10,7 @@ class HeaderNumerizer:
             self.heading_numbers[level] += 1
 
         for i in range(level + 1, 10):
-            self.heading_numbers[i] = 1
+           self.heading_numbers[i] = 1
 
         self.heading_level = level
         heading_number = '.'.join(str(self.heading_numbers[i]) for i in range(1, level + 1))

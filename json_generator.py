@@ -81,16 +81,9 @@ class JsonGenerator:
             'data': {
                 AddFigure.image_path.value: image_path,
                 AddFigure.title.value: title,
+                AddFigure.figure_number.value: self.__figure_number,
                 AddFigure.width.value: width,
                 AddFigure.height.value: height
-            }
-        })
-
-    def add_list_of_figures(self):
-        self.commands.append({
-            'type': DocxFunctionKey.figure_list.name,
-            'data': {
-                "list_of_figures": self.__list_of_figures
             }
         })
 

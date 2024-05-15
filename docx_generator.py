@@ -1,7 +1,6 @@
 import csv
 import os
 from docx import Document
-from docx.enum.text import WD_BREAK
 from docx.shared import Pt, Cm
 from config_class import Config
 from header_numerizer import HeaderNumerizer
